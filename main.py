@@ -1,4 +1,10 @@
-from websocket import Client
+from websocket_client.binance_client import BinanceClient
+from utils.logger import Logger
 
-client = Client("wss://ws-api.binance.com:443/ws-api/v3")
-client.fun()
+"""
+Docs: https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams
+"""
+streams = ["btcusdt@depth5@100ms"]
+logger = Logger("ws_log", "binance_depth")
+client = BinanceClient(logger, False)
+client.run(streams, "um")
