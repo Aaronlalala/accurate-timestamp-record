@@ -1,15 +1,19 @@
 import websocket
 import json
 
+from utils.data_parser import DataParser
+
 class BinanceClient:
     def __init__(self, logger, is_demo):
         self.spot_base_url = "wss://stream.binance.com:9443"
         self.um_base_url = "wss://fstream.binance.com"
         self.logger = logger
         self.is_demo = is_demo
+        self.data_parser = DataParser(logger=logger, path="btcusdt/book_diff.bin")
 
     def handle_message(self, message):
-        data = json.loads(message)
+        binary = self.data_parser.json_to_binary(message)
+        self.data_parser.write(binary)
         # ztang-TODO: parse and compress data 
 
     def demo_message(self, message):
